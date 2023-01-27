@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class Spwanmanager : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefab;
     private Vector3 spwanPos = new Vector3(20, 0, 0);
     private float startDealy = 1.5f;
     private float repeatRate = 1.5f;
     private PlayerController playerControllerScripts;
+    private int index;
 
     // Start is called before the first frame update
     private void Start()
@@ -24,9 +25,10 @@ public class Spwanmanager : MonoBehaviour
 
     private void SpwanObstacle()
     {
+        int index = Random.Range(0, (obstaclePrefab.Length) - 1);
         if (playerControllerScripts.gameOver == false)
         {
-            Instantiate(obstaclePrefab, spwanPos, obstaclePrefab.transform.rotation);
+            Instantiate(obstaclePrefab[index], spwanPos, obstaclePrefab[index].transform.rotation);
         }
     }
 }
