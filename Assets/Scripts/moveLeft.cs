@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class moveLeft : MonoBehaviour
 {
-    private float speed = 20;
+    public float speed = 20;
     private float leftBound = -15;
     private PlayerController playerConterllerScript;
 

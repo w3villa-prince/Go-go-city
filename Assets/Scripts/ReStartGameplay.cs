@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class ReStartGameplay : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] private GameObject player;
+
     private void Start()
     {
     }
@@ -15,6 +17,7 @@ public class ReStartGameplay : MonoBehaviour
 
     public void RestartScence()
     {
+        Destroy(player);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("Restart call...");
     }

@@ -8,12 +8,15 @@ public class Score : MonoBehaviour
     // public TextMeshProUGUI playerScore;
     public TextMeshProUGUI playerScore;
 
+    public TextMeshProUGUI highScore;
+
     public int num;
 
     // Start is called before the first frame update
     private void Start()
     {
         playerControllerScripts = GameObject.Find("Player").GetComponent<PlayerController>();
+        highScore.text = PlayerPrefs.GetInt("highScore", 0).ToString();
         /*  Debug.Log("Calling....Start");
           Debug.Log("Calling....update");
           UpdateScore(num);*/
@@ -30,5 +33,16 @@ public class Score : MonoBehaviour
     {
         //  Debug.Log("Score");
         playerScore.text = " " + playerControllerScripts.score.ToString();
+        if (playerControllerScripts.score > PlayerPrefs.GetInt("highScore", 0))
+        {
+            PlayerPrefs.SetInt("highScore", playerControllerScripts.score);
+            highScore.text = playerControllerScripts.score.ToString();
+        }
+    }
+
+    public void Reset()
+    {
+        PlayerPrefs.DeleteAll();
+        highScore.text = "0";
     }
 }

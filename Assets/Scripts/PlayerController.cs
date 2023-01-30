@@ -4,8 +4,8 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRd;
     public float force = 200;
-    public float gravityModifier = 3;
-    private bool isOnground = true;
+    public float gravityModifier = -30f;
+    [SerializeField] private bool isOnground = true;
     public bool gameOver;
     private Animator animat;
     public int score = 1;
@@ -22,13 +22,15 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRd = GetComponent<Rigidbody>();
-        Physics.gravity *= gravityModifier;
+        var gravity = Physics.gravity;
+        gravity.y = gravityModifier;
+
+        Physics.gravity = gravity;
         animat = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
         gamePlayManager = GetComponent<GamePlayManager>();
-        gameOver = gamePlayManager.gameOver;
 
-        //  playerRd.AddForce(Vector3.up * force);
+        gameOver = gamePlayManager.gameOver;
     }
 
     // Update is called once per frame
@@ -38,9 +40,6 @@ public class PlayerController : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Space) || (Input.touchCount > 0)) && isOnground && !gameOver)
         {
             playerRd.AddForce(Vector3.up * force, ForceMode.Impulse);
-            Debug.Log("Jump Facter  Y player ==" + playerRd.position.y + " Up height== " + Vector3.up + "Force ==" + force);
-            Debug.Log("Player position X After Jump " + playerRd.position.z);
-            Debug.Log("Player position X After Jump " + playerRd.position.x);
 
             isOnground = false;
             animat.SetTrigger("Jump_trig");
@@ -54,11 +53,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ground"))
         {
-            score++;
-
+            // score++;
             //  h.num++;
 
-            Debug.Log("PLayerControl Score " + score);
+            // Debug.Log("PLayerControl Score " + score);
             isOnground = true;
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
@@ -75,6 +73,12 @@ public class PlayerController : MonoBehaviour
 
             animat.SetInteger("DeathType_int", 1);
         }
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            score++;
+            Destroy(collision.gameObject);
+        }
+
         num++;
     }
 }
